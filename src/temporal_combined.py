@@ -67,7 +67,7 @@ state_names = states
 
 # ── Canonical split: rng.permutation on sorted state list (matches all scripts)
 n_states       = len(state_names)
-rng            = np.random.RandomState(42)
+rng            = np.random.RandomState(123)
 perm           = rng.permutation(n_states)
 split          = int(0.7 * n_states)
 tr_idx         = perm[:split]
