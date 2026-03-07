@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COVID-19 Policy &amp; Partisan Alignment</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      scroll-behavior: smooth;
+    }
+
+    /* ── Navbar ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 24px;
+      height: 52px;
+    }
+    .nav-brand {
+      font-weight: 700;
+      font-size: 15px;
+      color: #58a6ff;
+      margin-right: 32px;
+      white-space: nowrap;
+    }
+    nav a {
+      color: #8b949e;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 0 14px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    nav a:hover, nav a.active {
+      color: #e6edf3;
+      border-bottom-color: #58a6ff;
+    }
+
+    /* ── Layout ── */
+    main {
+      padding-top: 52px;
+    }
+
+    section {
+      padding: 48px 32px;
+      border-bottom: 1px solid #21262d;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    section:last-child { border-bottom: none; }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #e6edf3;
+      margin-bottom: 8px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: #8b949e;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      max-width: 820px;
+    }
+
+    /* ── Iframe wrapper ── */
+    .iframe-wrap {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #30363d;
+      background: #161b22;
+    }
+
+    iframe {
+      width: 100%;
+      display: block;
+      border: none;
+    }
+
+    /* ── Grid for time-scale section ── */
+    .scale-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .scale-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    /* ── Overview cards ── */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .stat-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #58a6ff;
+    }
+
+    .stat-card .sub {
+      font-size: 12px;
+      color: #6e7681;
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+    .badge-blue  { background: #1f3d6e; color: #79c0ff; }
+    .badge-orange{ background: #4a2400; color: #ffa657; }
+
+    .model-legend {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #8b949e;
+    }
+    .legend-swatch {
+      width: 28px;
+      height: 4px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">COVID-19 Policy &amp; Partisanship</span>
+  <a href="#overview">Overview</a>
+  <a href="#map">Party Map</a>
+  <a href="#combined">Combined F1</a>
+  <a href="#by-scale">By Time Scale</a>
+  <a href="#importance">Feature Importance</a>
+</nav>
+
+<main>
+
+  <!-- ── Overview ──────────────────────────────────────────────── -->
+  <section id="overview">
+    <h2>Overview</h2>
+    <p class="section-desc">
+      Can COVID-19 policy choices predict which party a state's governor belongs to?
+      This project trains machine learning models on 14 Oxford NPI policy features
+      (school closures, mask mandates, vaccine policies, etc.) from 50 US states
+      across 2020–2022, and evaluates how well policy alone classifies governor party
+      (Democratic vs. Republican) over time.
+    </p>
+
+    <div class="overview-grid">
+      <div class="stat-card">
+        <div class="label">Dataset</div>
+        <div class="value">77,897</div>
+        <div class="sub">state-day rows · 50 states · 1,096 days</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Policy Features</div>
+        <div class="value">14</div>
+        <div class="sub">Oxford NPI ordinal measures</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Transformer F1</div>
+        <div class="value">0.818</div>
+        <div class="sub">full-sequence · held-out states</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Peak Predictability</div>
+        <div class="value">Mar 2021</div>
+        <div class="sub">Transformer F1 = 1.00 · vaccination rollout</div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <p class="section-desc">
+        <strong style="color:#e6edf3;">Two models</strong> are compared across three time scales:
+      </p>
+      <div class="model-legend" style="margin-top:10px;">
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#1a3a6b;"></div>
+          <span><span class="badge badge-blue">LR probe</span> Logistic Regression (C=0.1) retrained per window</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#7a2800;"></div>
+          <span><span class="badge badge-orange">Transformer</span> Frozen best-checkpoint, applied to each window</span>
+        </div>
+      </div>
+      <p class="section-desc">
+        Darker shades = shorter time scale (7-day darkest, quarterly lightest).
+        State train/test split is fixed at 80/20 stratified by party throughout all analyses.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Party Map ─────────────────────────────────────────────── -->
+  <section id="map">
+    <h2>Governor Party Map</h2>
+    <p class="section-desc">
+      US states colored by governor party affiliation (2020–2021).
+      White labels show the partisan lean score — positive values lean Democratic, negative lean Republican.
+      Hover for details.
+    </p>
+    <div class="iframe-wrap">
+      <iframe src="../outputs/party_map.html" height="520"></iframe>
+    </div>
+  </section>
+
+  <!-- ── Combined F1 ────────────────────────────────────────────── -->
+  <section id="combined">
+    <h2>Party Predictability — All Time Scales (F1)</h2>
+    <p class="section-desc">
+      Weighted F1 for both models across all three time scales on the same plot.
+      Use the legend to toggle individual traces. The Transformer peaks sharply in March 2021
+      (vaccination rollout divergence); the LR probe peaks in mid-2020 and late 2022.
+    </p>
+    <div class="model-legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:#1a3a6b;"></div><span>LR — 7-day</span></div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#2e6db4;"></div><span>LR — monthly</span></div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#89b4e8;"></div><span>LR — quarterly</span></div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#7a2800;"></div><span>Transformer — 7-day</span></div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#c94a00;"></div><span>Transformer — monthly</span></div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#f4a46a;"></div><span>Transformer — quarterly</span></div>
+    </div>
+    <div class="iframe-wrap">
+      <iframe src="../outputs/temporal_party_f1_all.html" height="560"></iframe>
+    </div>
+  </section>
+
+  <!-- ── By Time Scale ─────────────────────────────────────────── -->
+  <section id="by-scale">
+    <h2>Party Predictability — By Time Scale (F1)</h2>
+    <p class="section-desc">
+      Individual plots per time scale for closer inspection.
+      Each plot shows the LR probe and Transformer for that window granularity.
+    </p>
+    <div class="scale-grid">
+      <div class="scale-card">
+        <h3>Quarterly</h3>
+        <div class="iframe-wrap">
+          <iframe src="../outputs/temporal_party_f1_quarterly.html" height="480"></iframe>
+        </div>
+      </div>
+      <div class="scale-card">
+        <h3>Monthly</h3>
+        <div class="iframe-wrap">
+          <iframe src="../outputs/temporal_party_f1.html" height="480"></iframe>
+        </div>
+      </div>
+      <div class="scale-card">
+        <h3>7-day rolling</h3>
+        <div class="iframe-wrap">
+          <iframe src="../outputs/temporal_party_f1_7d.html" height="480"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Feature Importance ────────────────────────────────────── -->
+  <section id="importance">
+    <h2>Feature Importance</h2>
+    <p class="section-desc">
+      Which policy features best distinguish Republican from Democratic governors?
+      Shown for Logistic Regression (|coefficient|), Random Forest, and Gradient Boosting (impurity-based importance).
+    </p>
+    <div class="iframe-wrap">
+      <iframe src="../outputs/party_feature_importance.html" height="540"></iframe>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll("nav a");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove("active"));
+        const link = document.querySelector(`nav a[href="#${e.target.id}"]`);
+        if (link) link.classList.add("active");
+      }
+    });
+  }, { rootMargin: "-52px 0px -60% 0px", threshold: 0 });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
